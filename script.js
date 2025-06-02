@@ -4,16 +4,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const navLinks = document.querySelectorAll('.nav-link');
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href').substring(1);
-            const targetSection = document.getElementById(targetId);
+            const href = this.getAttribute('href');
             
-            if (targetSection) {
-                targetSection.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
+            // Only prevent default for internal links (starting with #)
+            if (href && href.startsWith('#')) {
+                e.preventDefault();
+                const targetId = href.substring(1);
+                const targetSection = document.getElementById(targetId);
+                
+                if (targetSection) {
+                    targetSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
             }
+            // External links will work normally without preventDefault()
         });
     });
 
@@ -404,4 +410,17 @@ function initializeBreslandFeatures() {
             });
         });
     });
+}
+
+// Remove theme toggle functionality - dark mode only
+function initializeThemeToggle() {
+    // Dark mode is now the only mode - no toggle needed
+    // Remove any light mode classes if they exist
+    document.documentElement.classList.remove('light-mode');
+    
+    // Hide the theme toggle button
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+        themeToggle.style.display = 'none';
+    }
 }
