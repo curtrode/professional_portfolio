@@ -503,7 +503,6 @@ body {
 
 .interactive-demo {
     display: flex;
-    flex
     align-items: center;
     gap: var(--spacing-sm);
 }
