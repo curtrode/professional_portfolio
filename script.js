@@ -25,12 +25,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Mobile navigation toggle
     const navToggle = document.querySelector('.nav-toggle');
-    const navLinks2 = document.querySelector('.nav-links');
+    const navLinksContainer = document.querySelector('.nav-links');
     
-    navToggle.addEventListener('click', function() {
-        navLinks2.classList.toggle('active');
-        this.classList.toggle('active');
-    });
+    if (navToggle && navLinksContainer) {
+        navToggle.addEventListener('click', function() {
+            navLinksContainer.classList.toggle('active');
+            this.classList.toggle('active');
+        });
+        
+        // Close mobile menu when clicking on a nav link
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                navLinksContainer.classList.remove('active');
+                navToggle.classList.remove('active');
+            });
+        });
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!navToggle.contains(e.target) && !navLinksContainer.contains(e.target)) {
+                navLinksContainer.classList.remove('active');
+                navToggle.classList.remove('active');
+            }
+        });
+    }
 
     // Intersection Observer for animations
     const observerOptions = {
@@ -204,39 +222,6 @@ particleStyle.textContent = `
     .project-card.animate-in, .timeline-item.animate-in, .about-content.animate-in {
         opacity: 1;
         transform: translateY(0);
-    }
-    
-    /* Mobile navigation styles */
-    @media (max-width: 768px) {
-        .nav-links {
-            position: fixed;
-            top: 70px;
-            left: 0;
-            right: 0;
-            background: rgba(15, 15, 35, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border);
-            flex-direction: column;
-            padding: var(--spacing-md);
-            transform: translateY(-100%);
-            transition: transform 0.3s ease;
-        }
-        
-        .nav-links.active {
-            transform: translateY(0);
-        }
-        
-        .nav-toggle.active span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-        
-        .nav-toggle.active span:nth-child(2) {
-            opacity: 0;
-        }
-        
-        .nav-toggle.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(7px, -6px);
-        }
     }
 `;
 document.head.appendChild(particleStyle);
